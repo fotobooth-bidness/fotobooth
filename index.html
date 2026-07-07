@@ -345,8 +345,10 @@
   .cal-cell.some .d{background:var(--gold)}
   .cal-cell.full{background:#f6eceb;color:#a5453b}
   .cal-cell.full .d{background:#c0564a}
+  .cal-cell.na{background:#eeeeef;color:#8a8c90}
+  .cal-cell.na .d{background:#a4a6ab}
   .cal-cell.past{background:transparent;color:#c2c4bf;cursor:not-allowed}
-  .cal-cell.open:hover,.cal-cell.some:hover,.cal-cell.full:hover{transform:translateY(-1px);border-color:currentColor}
+  .cal-cell.open:hover,.cal-cell.some:hover,.cal-cell.full:hover,.cal-cell.na:hover{transform:translateY(-1px);border-color:currentColor}
   .cal-cell.sel{outline:2px solid var(--accent);outline-offset:1px}
   .cal-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
   .cal-legend .lg{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted)}
@@ -354,21 +356,21 @@
   .sw-open{background:var(--accent-soft);border:1px solid var(--accent)}
   .sw-some{background:#fdf6e9;border:1px solid var(--gold)}
   .sw-full{background:#f6eceb;border:1px solid #c0564a}
+  .sw-na{background:#eeeeef;border:1px solid #a4a6ab}
   .sw-past{background:var(--mist);border:1px solid var(--line)}
 
   .cal-side{position:sticky;top:88px}
   .slot-panel{border:1px solid var(--line);border-radius:18px;padding:24px;background:linear-gradient(160deg,var(--accent-soft),#fff);min-height:220px}
   .slot-empty{text-align:center;color:var(--muted);padding:36px 12px}
   .slot-panel h3{font-family:"Fraunces",serif;font-size:1.2rem;margin-bottom:16px}
-  .slot-list{display:flex;flex-direction:column;gap:8px}
-  .slot{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:12px 16px;border-radius:11px;border:1px solid var(--line);background:#fff;font-size:.95rem;font-weight:500;
+  .status-badge{
+    display:inline-block;font-size:.85rem;font-weight:600;padding:7px 16px;border-radius:20px;letter-spacing:.01em;
   }
-  .slot.taken{opacity:.55;background:var(--mist)}
-  .slot .tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px}
-  .slot .tag.open{background:var(--accent-soft);color:var(--accent)}
-  .slot .tag.taken{background:#f6eceb;color:#a5453b}
+  .status-badge.open{background:var(--accent-soft);color:var(--accent)}
+  .status-badge.some{background:#fdf6e9;color:#a9791f}
+  .status-badge.full{background:#f6eceb;color:#a5453b}
+  .status-badge.na{background:#eeeeef;color:#7c7e83}
+  .status-note{margin-top:14px;color:var(--muted);font-size:.95rem;line-height:1.55}
 
   /* ---------- Contact ---------- */
   .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
@@ -651,8 +653,8 @@
         <div class="sec-head center">
           <span class="eyebrow">Booking</span>
           <h2>Check available dates &amp; times</h2>
-          <p>Browse the calendar below to see which days have open slots. Found one you like? Message me to lock it in — availability updates regularly.</p>
-          <p class="slot-guide"><strong>Daytime</strong> events start before 5 PM · <strong>Evening</strong> events start at 5 PM or later. Exact hours are set with you personally when you book. Have a large event that needs the whole day? Reach out and we can reserve the full day just for you.</p>
+          <p>Browse the calendar below to check each day's status, then message me to inquire. Availability updates regularly.</p>
+          <p class="slot-guide">A <strong>gold</strong> date means I already have a booking that day, but other times may still be open — <strong>message me to check</strong>. Exact times are always arranged personally when you book.</p>
         </div>
 
         <div class="cal-wrap">
@@ -668,9 +670,9 @@
             <div class="cal-grid" id="calGrid"></div>
             <div class="cal-legend">
               <span class="lg"><span class="sw sw-open"></span>Available</span>
-              <span class="lg"><span class="sw sw-some"></span>Limited</span>
-              <span class="lg"><span class="sw sw-full"></span>Booked</span>
-              <span class="lg"><span class="sw sw-past"></span>Unavailable</span>
+              <span class="lg"><span class="sw sw-some"></span>Contact for availability</span>
+              <span class="lg"><span class="sw sw-full"></span>Fully Booked</span>
+              <span class="lg"><span class="sw sw-na"></span>Not Available</span>
             </div>
           </div>
 
@@ -678,13 +680,14 @@
             <div id="slotPanel" class="slot-panel">
               <div class="slot-empty" id="slotEmpty">
                 <div style="font-size:1.8rem;margin-bottom:8px">📅</div>
-                <p>Select a date to see available time slots.</p>
+                <p>Select a date to check its availability.</p>
               </div>
               <div id="slotContent" style="display:none">
                 <h3 id="slotDate">Date</h3>
-                <div id="slotList" class="slot-list"></div>
-                <button class="btn btn-primary" data-tab="contact" style="width:100%;justify-content:center;margin-top:20px">Message me to book this →</button>
-                <p class="form-note" style="text-align:center">Exact start times are arranged personally when you reach out — just let me know your event details.</p>
+                <div id="statusBadge" class="status-badge"></div>
+                <p id="statusNote" class="status-note"></p>
+                <button class="btn btn-primary" data-tab="contact" style="width:100%;justify-content:center;margin-top:20px">Message me about this date →</button>
+                <p class="form-note" style="text-align:center">Exact times are arranged personally when you reach out — just let me know your event details.</p>
               </div>
             </div>
           </div>
@@ -844,30 +847,52 @@
   /* ==================================================================
      ★★★  BOOKING CALENDAR — THIS IS THE ONLY PART YOU EDIT  ★★★
      ------------------------------------------------------------------
-     You offer TWO slots per day: one "Daytime" and one "Evening".
-     Exact hours are worked out personally with each client — the
-     calendar just shows whether each slot is still open.
+     Clients message you to inquire. The calendar just signals the
+     status of each day so they know before reaching out.
 
-     1) DAILY_SLOTS: leave as ["Daytime", "Evening"] unless you want
-        to rename or add slots later.
+     For each date, give it ONE status label:
+        "limited"  -> a booking exists, but other times MAY be open
+                      (shows gold "Contact for availability")
+        "full"     -> the whole day is booked (shows red "Fully Booked")
+        "na"        -> you're personally unavailable that day
+                      (shows gray "Not Available")
 
-     2) BOOKED: list ONLY the slots that are already taken per date.
-        - One slot taken     -> that day shows as "Limited".
-        - Both slots taken    -> that day shows as "Booked".
-        - A date not listed   -> shows as fully "Available".
-        Use "ALL" to block an entire day — either for a full-day
-        event (one big booking that takes the whole day) or a day off.
+     A date you DON'T list shows as fully "Available" (green) by default.
+     To reopen a date, just delete its line.
 
-     Date format is "YYYY-MM-DD"  (year-month-day).
-     When you get a booking, add the date + slot here and re-commit.
+     Date format is "YYYY-MM-DD" (four-digit year - month - day).
+     Every line ends with a comma. When something changes, edit here
+     and re-upload index.html to GitHub.
      ================================================================== */
 
-  const DAILY_SLOTS = ["Daytime", "Evening"];
+  const STATUS = {
+    // --- July 2026 ---
+    "2026-07-11": "na",
+    "2026-07-24": "full",
+    "2026-07-31": "full",
 
-  const BOOKED = {
-    "2026-07-12": ["Daytime", "Evening"],  // fully booked example (both slots taken)
-    "2026-07-18": ["Evening"],             // one slot taken example (daytime still open)
-    "2026-07-25": "ALL"                     // whole day taken (full-day event or day off)
+    // --- Oct 30 – Nov 16, 2026: unavailable ---
+    "2026-10-30": "na",
+    "2026-10-31": "na",
+    "2026-11-01": "na",
+    "2026-11-02": "na",
+    "2026-11-03": "na",
+    "2026-11-04": "na",
+    "2026-11-05": "na",
+    "2026-11-06": "na",
+    "2026-11-07": "na",
+    "2026-11-08": "na",
+    "2026-11-09": "na",
+    "2026-11-10": "na",
+    "2026-11-11": "na",
+    "2026-11-12": "na",
+    "2026-11-13": "na",
+    "2026-11-14": "na",
+    "2026-11-15": "na",
+    "2026-11-16": "na",
+
+    // --- Nov 21, 2026: unavailable ---
+    "2026-11-21": "na",
   };
 
   /* ====== (You don't need to edit anything below this line) ====== */
@@ -880,7 +905,8 @@
     const slotEmpty = document.getElementById('slotEmpty');
     const slotContent = document.getElementById('slotContent');
     const slotDate = document.getElementById('slotDate');
-    const slotList = document.getElementById('slotList');
+    const statusBadge = document.getElementById('statusBadge');
+    const statusNote = document.getElementById('statusNote');
     if(!grid) return;
 
     const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -892,15 +918,20 @@
     const pad = n => String(n).padStart(2,'0');
     const keyOf = (y,m,d) => `${y}-${pad(m+1)}-${pad(d)}`;
 
-    // Returns {status:'open'|'some'|'full', taken:[...]}
-    function dayInfo(key){
-      const b = BOOKED[key];
-      if(!b) return {status:'open', taken:[]};
-      if(b === "ALL") return {status:'full', taken:DAILY_SLOTS.slice()};
-      const taken = DAILY_SLOTS.filter(s => b.includes(s));
-      if(taken.length === 0) return {status:'open', taken:[]};
-      if(taken.length >= DAILY_SLOTS.length) return {status:'full', taken};
-      return {status:'some', taken};
+    // Config for each status: css class, calendar label, and the note
+    // shown when a client clicks the day.
+    const STATUS_INFO = {
+      open:    { cls:'open',    label:'Available',              note:"This date is open — message me to book!" },
+      limited: { cls:'some',    label:'Contact for availability', note:"Partially booked — message me to check what times are still available." },
+      full:    { cls:'full',    label:'Fully Booked',           note:"This date is fully booked. Feel free to message me about other dates!" },
+      na:      { cls:'na',      label:'Not Available',          note:"We're not available on this date. Message me about other dates!" }
+    };
+
+    // Returns the status key for a date: 'open' | 'limited' | 'full' | 'na'
+    function dayStatus(key){
+      const s = STATUS[key];
+      if(s === "limited" || s === "full" || s === "na") return s;
+      return 'open';
     }
 
     function render(){
@@ -925,8 +956,8 @@
         if(cellDate < today){
           cell.className='cal-cell past';
         } else {
-          const info=dayInfo(key);
-          cell.className='cal-cell '+info.status;
+          const st=dayStatus(key);
+          cell.className='cal-cell '+STATUS_INFO[st].cls;
           const dots=document.createElement('span'); dots.className='dot-row';
           const dot=document.createElement('span'); dot.className='d'; dots.appendChild(dot);
           cell.appendChild(dots);
@@ -940,18 +971,14 @@
     function selectDay(key,d){
       selectedKey=key;
       render();
-      const info=dayInfo(key);
+      const st=dayStatus(key);
+      const info=STATUS_INFO[st];
       slotEmpty.style.display='none';
       slotContent.style.display='block';
       slotDate.textContent=`${MONTHS[viewM]} ${d}, ${viewY}`;
-      slotList.innerHTML='';
-      DAILY_SLOTS.forEach(s=>{
-        const taken=info.taken.includes(s);
-        const row=document.createElement('div');
-        row.className='slot'+(taken?' taken':'');
-        row.innerHTML=`<span>${s}</span><span class="tag ${taken?'taken':'open'}">${taken?'Booked':'Available'}</span>`;
-        slotList.appendChild(row);
-      });
+      statusBadge.className='status-badge '+info.cls;
+      statusBadge.textContent=info.label;
+      statusNote.textContent=info.note;
     }
 
     prevBtn.addEventListener('click',()=>{
