@@ -143,6 +143,8 @@
   }
   .btn-primary{background:var(--accent);color:#fff}
   .btn-primary:hover{background:#25473d;transform:translateY(-1px)}
+  .btn.is-disabled{background:var(--mist);color:#a4a6ab;cursor:not-allowed;pointer-events:none;border-color:var(--line)}
+  .btn.is-disabled:hover{background:var(--mist);transform:none}
   .btn-ghost{background:#fff;border-color:var(--line);color:var(--ink)}
   .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
   .hero-visual{
@@ -686,7 +688,7 @@
                 <h3 id="slotDate">Date</h3>
                 <div id="statusBadge" class="status-badge"></div>
                 <p id="statusNote" class="status-note"></p>
-                <button class="btn btn-primary" data-tab="contact" style="width:100%;justify-content:center;margin-top:20px">Message me about this date →</button>
+                <button id="msgDateBtn" class="btn btn-primary" data-tab="contact" style="width:100%;justify-content:center;margin-top:20px">Message me about this date →</button>
                 <p class="form-note" style="text-align:center">Exact times are arranged personally when you reach out — just let me know your event details.</p>
               </div>
             </div>
@@ -794,7 +796,10 @@
 
   // Any element with data-tab switches panels
   document.querySelectorAll('[data-tab]').forEach(el=>{
-    el.addEventListener('click',()=>activate(el.dataset.tab));
+    el.addEventListener('click',()=>{
+      if(el.classList.contains('is-disabled')) return; // ignore clicks on disabled buttons
+      activate(el.dataset.tab);
+    });
     // keyboard support for non-button elements (e.g. the logo)
     el.addEventListener('keydown',(e)=>{
       if((e.key==='Enter'||e.key===' ') && el.getAttribute('role')==='button'){
@@ -868,8 +873,9 @@
   const STATUS = {
     // --- July 2026 ---
     "2026-07-11": "na",
-    "2026-07-24": "full",
-    "2026-07-31": "full",
+    "2026-07-12": "na", 
+    "2026-07-24": "limited",
+    "2026-07-31": "limited",
 
     // --- Oct 30 – Nov 16, 2026: unavailable ---
     "2026-10-30": "na",
@@ -907,6 +913,7 @@
     const slotDate = document.getElementById('slotDate');
     const statusBadge = document.getElementById('statusBadge');
     const statusNote = document.getElementById('statusNote');
+    const msgDateBtn = document.getElementById('msgDateBtn');
     if(!grid) return;
 
     const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -921,10 +928,10 @@
     // Config for each status: css class, calendar label, and the note
     // shown when a client clicks the day.
     const STATUS_INFO = {
-      open:    { cls:'open',    label:'Available',              note:"This date is open — message me to book!" },
-      limited: { cls:'some',    label:'Contact for availability', note:"Partially booked — message me to check what times are still available." },
-      full:    { cls:'full',    label:'Fully Booked',           note:"This date is fully booked. Feel free to message me about other dates!" },
-      na:      { cls:'na',      label:'Not Available',          note:"We're not available on this date. Message me about other dates!" }
+      open:    { cls:'open',    label:'Available',              note:"This date is open — message me to book!", disabled:false },
+      limited: { cls:'some',    label:'Contact for availability', note:"Partially booked — message me to check what times are still available.", disabled:false },
+      full:    { cls:'full',    label:'Fully Booked',           note:"This date is fully booked. Feel free to message me about other dates!", disabled:true },
+      na:      { cls:'na',      label:'Not Available',          note:"We're not available on this date. Message me about other dates!", disabled:true }
     };
 
     // Returns the status key for a date: 'open' | 'limited' | 'full' | 'na'
@@ -979,6 +986,14 @@
       statusBadge.className='status-badge '+info.cls;
       statusBadge.textContent=info.label;
       statusNote.textContent=info.note;
+      // Disable the message button for dates you can't book (full / not available)
+      if(info.disabled){
+        msgDateBtn.classList.add('is-disabled');
+        msgDateBtn.textContent = (st==='na') ? 'Not available' : 'Fully booked';
+      } else {
+        msgDateBtn.classList.remove('is-disabled');
+        msgDateBtn.textContent = 'Message me about this date →';
+      }
     }
 
     prevBtn.addEventListener('click',()=>{
