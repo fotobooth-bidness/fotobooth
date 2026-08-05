@@ -298,6 +298,8 @@
     display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;
     border:1px solid var(--line);
   }
+  .gallery .shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+  .gallery .shot:hover img{transform:scale(1.04)}
 
   /* ---------- Packages ---------- */
   .pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
@@ -621,12 +623,12 @@
           <div class="card"><div class="ico">🖼️</div><h3>Backdrop options</h3><p>Choose from sequin, floral, matte color, or bring your own. We'll help you pick.</p></div>
         </div>
         <div class="gallery">
-          <div class="shot">Event photo 1</div>
-          <div class="shot">Event photo 2</div>
-          <div class="shot">Event photo 3</div>
-          <div class="shot">Event photo 4</div>
-          <div class="shot">Event photo 5</div>
-          <div class="shot">Event photo 6</div>
+          <div class="shot"><img src="booth1.jpg" alt="Guests posing under studio lighting at a fotobooth photo booth setup" loading="lazy"></div>
+          <div class="shot"><img src="booth2.jpg" alt="Two custom-themed photo booth strips displayed side by side" loading="lazy"></div>
+          <div class="shot"><img src="booth3.jpg" alt="Custom photo strip for a sweet sixteen event" loading="lazy"></div>
+          <div class="shot"><img src="booth4.jpg" alt="Photo strip keychains from a fotobooth event" loading="lazy"></div>
+          <div class="shot"><img src="booth5.jpg" alt="fotobooth branded cards and a printed photo strip" loading="lazy"></div>
+          <div class="shot"><img src="booth6.jpg" alt="fotobooth branding on-site at an event" loading="lazy"></div>
         </div>
         <div style="text-align:center;margin-top:40px">
           <button class="btn btn-primary" data-tab="booking">See if your date is open →</button>
@@ -642,7 +644,7 @@
         <div class="sec-head center">
           <span class="eyebrow">Packages</span>
           <h2>Simple pricing, everything included</h2>
-          <p>Setup, breakdown, an on-site attendant, and a full online gallery come with every package. <strong style="color:var(--accent);font-weight:600">Highlighted</strong> items show what's added when you move up a tier. Have something specific in mind? Message me for a custom quote.</p>
+          <p>Setup, breakdown, an on-site attendant, and a full online gallery come with every package. <strong style="color:var(--accent);font-weight:600">Highlighted</strong> items show what's added when you move up a tier. Have something specific in mind? Message us for a custom quote.</p>
         </div>
         <div class="pkg-grid">
 
@@ -764,8 +766,8 @@
         <div class="sec-head center">
           <span class="eyebrow">Booking</span>
           <h2>Check available dates &amp; times</h2>
-          <p>Browse the calendar below to check each day's status, then message me to inquire. Availability updates regularly.</p>
-          <p class="slot-guide">A <strong>gold</strong> date means I already have a booking that day, but other times may still be open — <strong>message me to check</strong>. Exact times are always arranged personally when you book.</p>
+          <p>Browse the calendar below to check each day's status, then message us to inquire. Availability updates regularly.</p>
+          <p class="slot-guide">A <strong>gold</strong> date means fotobooth already has a booking that day, but other times may still be open — <strong>message us to check</strong>. Exact times are arranged when you book.</p>
         </div>
 
         <div class="cal-wrap">
@@ -797,8 +799,8 @@
                 <h3 id="slotDate">Date</h3>
                 <div id="statusBadge" class="status-badge"></div>
                 <p id="statusNote" class="status-note"></p>
-                <button id="msgDateBtn" class="btn btn-primary" data-tab="contact" style="width:100%;justify-content:center;margin-top:20px">Message me about this date →</button>
-                <p class="form-note" style="text-align:center">Exact times are arranged personally when you reach out — just let me know your event details.</p>
+                <button id="msgDateBtn" class="btn btn-primary" data-tab="contact" style="width:100%;justify-content:center;margin-top:20px">Message us about this date →</button>
+                <p class="form-note" style="text-align:center">Exact times are arranged when you reach out — just let us know your event details.</p>
               </div>
             </div>
           </div>
@@ -813,8 +815,8 @@
       <div class="wrap">
         <div class="sec-head">
           <span class="eyebrow">Contact</span>
-          <h2>Get in touch &amp; book with me</h2>
-          <p>This is the place to ask anything about the business, check a date, or talk through a custom package. Send a message and we'll chat one-on-one about booking and what works best for your event.</p>
+          <h2>Get in touch &amp; book with us</h2>
+          <p>This is the place to ask anything about the business, check a date, or talk through a custom package. Send a message and we'll help you find the right time and package for your event.</p>
         </div>
         <div class="contact-grid">
           <div class="contact-info">
@@ -1165,10 +1167,10 @@
     // Config for each status: css class, calendar label, and the note
     // shown when a client clicks the day.
     const STATUS_INFO = {
-      open:    { cls:'open',    label:'Available',              note:"This date is open — message me to book!", disabled:false },
-      limited: { cls:'some',    label:'Contact for availability', note:"Partially booked — message me to check what times are still available.", disabled:false },
-      full:    { cls:'full',    label:'Fully Booked',           note:"This date is fully booked. Feel free to message me about other dates!", disabled:true },
-      na:      { cls:'na',      label:'Not Available',          note:"We're not available on this date. Message me about other dates!", disabled:true }
+      open:    { cls:'open',    label:'Available',              note:"This date is open — message us to book!", disabled:false },
+      limited: { cls:'some',    label:'Contact for availability', note:"Partially booked — message us to check what times are still available.", disabled:false },
+      full:    { cls:'full',    label:'Fully Booked',           note:"This date is fully booked. Feel free to message us about other dates!", disabled:true },
+      na:      { cls:'na',      label:'Not Available',          note:"fotobooth is not available on this date. Message us about other dates!", disabled:true }
     };
 
     // Returns the status key for a date: 'open' | 'limited' | 'full' | 'na'
@@ -1229,7 +1231,7 @@
         msgDateBtn.textContent = (st==='na') ? 'Not available' : 'Fully booked';
       } else {
         msgDateBtn.classList.remove('is-disabled');
-        msgDateBtn.textContent = 'Message me about this date →';
+        msgDateBtn.textContent = 'Message us about this date →';
       }
     }
 
