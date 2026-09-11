@@ -111,6 +111,19 @@
   }
   .tab:hover{color:var(--ink);background:var(--mist)}
   .tab.active{color:var(--ink);background:var(--accent-soft);font-weight:500}
+
+  /* ---------- Booths nav dropdown ---------- */
+  .nav-dropdown{position:relative}
+  .nav-dropdown-trigger{display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+  .nav-dropdown-trigger .chev{transition:transform .18s;flex-shrink:0}
+  .nav-dropdown.open .nav-dropdown-trigger .chev{transform:rotate(180deg)}
+  .nav-dropdown-menu{
+    position:absolute;top:100%;left:0;margin-top:8px;
+    background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);
+    min-width:210px;padding:8px;display:none;flex-direction:column;gap:2px;z-index:60;
+  }
+  .nav-dropdown.open .nav-dropdown-menu{display:flex}
+  .nav-dropdown-menu .dropdown-item{width:100%;text-align:left;padding:11px 14px;border-radius:8px}
   .nav-cta{
     background:var(--accent);color:#fff;border:none;cursor:pointer;
     font:inherit;font-size:15px;font-weight:500;padding:9px 18px;border-radius:9px;transition:.18s;
@@ -333,10 +346,25 @@
   }
   .gallery .shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
   .gallery .shot:hover img{transform:scale(1.04)}
+  .shot-ph{
+    display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    width:100%;height:100%;color:var(--muted);font-size:1.6rem;background:repeating-linear-gradient(45deg,#fff,#fff 10px,var(--mist) 10px,var(--mist) 20px);
+  }
+  .shot-ph span{font-size:11px;letter-spacing:.02em}
+
+  /* ---------- Booth detail pages (description + used-for + CTA) ---------- */
+  .booth-meta{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;
+    margin-top:8px;padding-top:28px;border-top:1px solid var(--line);
+  }
+  .booth-used-for .label{display:block;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px}
+  .use-tags{display:flex;flex-wrap:wrap;gap:8px}
+  .use-tag{display:inline-block;padding:7px 14px;border-radius:20px;background:var(--accent-soft);color:var(--accent);font-size:.85rem;font-weight:500}
 
   /* ---------- Packages ---------- */
-  .pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
-  @media(max-width:820px){.pkg-grid{grid-template-columns:1fr}}
+  .pkg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;align-items:stretch}
+  @media(max-width:960px){.pkg-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:620px){.pkg-grid{grid-template-columns:1fr}}
   .pkg{
     border:1.5px solid #bcd3cb;border-radius:6px;padding:34px 30px;background:#fff;
     display:flex;flex-direction:column;transition:.2s;position:relative;
@@ -344,6 +372,8 @@
   .pkg.featured{border:2px solid var(--accent);box-shadow:0 34px 54px -26px rgba(20,20,22,.2)}
   .pkg.pkg-luxury{border:1.5px solid #d9c39a}
   .pkg.pkg-luxury .price{color:var(--gold)}
+  .pkg.pkg-custom{border:1.5px dashed #a89686;background:linear-gradient(160deg,#faf8f5,#fff)}
+  .pkg.pkg-custom .price{color:var(--walnut);font-size:2.1rem}
   .pkg.featured::before{
     content:"Most popular";position:absolute;top:-13px;left:50%;transform:translateX(-50%);
     background:var(--accent);color:#fff;font-size:11.5px;font-weight:600;padding:5px 15px;border-radius:20px;
@@ -362,6 +392,12 @@
   .pkg .btn{width:100%;justify-content:center}
   .pkg-grid.two{max-width:820px;margin:0 auto;grid-template-columns:1fr 1fr}
   @media(max-width:820px){.pkg-grid.two{grid-template-columns:1fr}}
+  .pricing-subhead{
+    max-width:720px;margin:64px auto 32px;text-align:center;
+    padding-top:36px;border-top:1px solid var(--line);
+  }
+  .pricing-subhead h3{font-family:"Fraunces",serif;font-size:1.6rem;margin-bottom:8px;letter-spacing:-.01em}
+  .pricing-subhead p{color:var(--muted);font-size:1rem}
 
   /* ---------- Add-ons ---------- */
   .addons{margin-top:72px;padding-top:64px;border-top:1px solid var(--line)}
@@ -381,18 +417,12 @@
   .addon .a-price{font-family:"Fraunces",serif;font-size:1.4rem;font-weight:600;color:var(--accent)}
   .addon .a-price span{font-size:.85rem;color:var(--muted);font-family:"Inter",sans-serif;font-weight:400}
   .addon p{font-size:.9rem;color:var(--muted);margin-top:8px}
-  .addon.featured-addon{grid-column:span 1;border-color:var(--gold);background:linear-gradient(160deg,#fdf9f1,#fff)}
-
-  /* ---------- Custom quote CTA (bottom of Pricing) ---------- */
-  .custom-cta{
-    max-width:720px;margin:60px auto 0;text-align:center;
-    background:linear-gradient(160deg,var(--accent-soft),#fff);
-    border:1px solid var(--line);border-radius:10px;padding:52px 40px;
+  .addon-link{
+    display:inline-block;margin-top:12px;background:none;border:none;padding:0;
+    color:var(--accent);font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:underline;font-family:inherit;
   }
-  .custom-cta .eyebrow{display:block;margin-bottom:14px}
-  .custom-cta h2{font-size:clamp(1.6rem,3vw,2.1rem);margin-bottom:14px;letter-spacing:-.01em}
-  .custom-cta p{color:var(--muted);max-width:52ch;margin:0 auto 30px;font-size:1.02rem;line-height:1.6}
-  @media(max-width:560px){.custom-cta{padding:40px 24px}}
+  .addon-link:hover{color:#1f4038}
+  .addon.featured-addon{grid-column:span 1;border-color:var(--gold);background:linear-gradient(160deg,#fdf9f1,#fff)}
 
   /* ---------- TBA ---------- */
   .tba{
@@ -538,6 +568,12 @@
     .nav-cta{display:none}
     .nav-right{gap:4px}
     .ig-link{width:40px;height:40px}
+    .nav-dropdown-trigger{width:100%;justify-content:space-between}
+    .nav-dropdown-menu{
+      position:static;box-shadow:none;border:none;background:none;
+      margin-top:2px;margin-left:12px;min-width:0;padding:0;
+    }
+    .nav-dropdown-menu .dropdown-item{padding:10px 14px;font-size:16px}
   }
 </style>
 </head>
@@ -548,7 +584,16 @@
     <div class="brand" data-tab="home" role="button" tabindex="0" aria-label="Go to home">fotobooth.</div>
     <nav class="tabs" id="tabs">
       <button class="tab active" data-tab="home">Home</button>
-      <button class="tab" data-tab="showcase">The Booth</button>
+      <div class="nav-dropdown" id="boothsDropdown">
+        <button class="tab nav-dropdown-trigger" id="boothsTrigger" aria-haspopup="true" aria-expanded="false">
+          Booths
+          <svg class="chev" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="boothsMenu">
+          <button class="tab dropdown-item" data-tab="booth-classic">The Fotobooth</button>
+          <button class="tab dropdown-item" data-tab="booth-receipt">FotoReceipt Booth</button>
+        </div>
+      </div>
       <button class="tab" data-tab="packages">Pricing</button>
       <button class="tab" data-tab="faq">FAQ</button>
       <button class="tab" data-tab="contact">Contact</button>
@@ -673,21 +718,29 @@
   </div>
 
   <!-- SHOWCASE -->
-  <div class="panel" id="showcase">
+  <!-- BOOTHS: The Fotobooth -->
+  <div class="panel" id="booth-classic">
     <section>
       <div class="wrap">
         <div class="sec-head">
-          <span class="eyebrow">The booth</span>
-          <h2>Sleek, open-air, and made to move</h2>
-          <p>Our open-air setup fits weddings, corporate events, and parties alike — compact footprint, big presence, custom-branded prints.</p>
+          <span class="eyebrow">Booths</span>
+          <h2>The Fotobooth</h2>
+          <p>Our signature open-air photo booth — sleek, spacious, and made to move. Complete with professional studio lighting, custom print layouts, curated props, and your choice of backdrop.</p>
         </div>
-        <div class="feature-row cols-3">
-          <div class="feature"><span class="f-num">01</span><h3>Custom print layouts</h3><p>Your names, logo, event date, and colors on every print. Designed to match your theme.</p></div>
-          <div class="feature"><span class="f-num">02</span><h3>Curated props</h3><p>A clean, tasteful prop selection — never cheap or cluttered. Or go prop-free for a refined look.</p></div>
-          <div class="feature"><span class="f-num">03</span><h3>Backdrop options</h3><p>Choose from sequin, floral, matte color, or bring your own. We'll help you pick.</p></div>
+        <div class="booth-meta">
+          <div class="booth-used-for">
+            <span class="label">Best for</span>
+            <div class="use-tags">
+              <span class="use-tag">Weddings</span>
+              <span class="use-tag">Birthdays</span>
+              <span class="use-tag">Large parties</span>
+              <span class="use-tag">Corporate events</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" data-tab="packages">Check pricing →</button>
         </div>
-        <div class="gallery">
-          <div class="shot"><img src="booth1.jpg" alt="Guests posing under studio lighting at a fotobooth photo booth setup" loading="lazy"></div>
+        <div class="gallery" style="margin-top:44px">
+          <div class="shot"><img src="booth1.jpg" alt="Guests posing under studio lighting at The Fotobooth setup" loading="lazy"></div>
           <div class="shot"><img src="booth2.jpg" alt="Two custom-themed photo booth strips displayed side by side" loading="lazy"></div>
           <div class="shot"><img src="booth3.jpg" alt="Custom photo strip for a sweet sixteen event" loading="lazy"></div>
           <div class="shot"><img src="booth4.jpg" alt="Photo strip keychains from a fotobooth event" loading="lazy"></div>
@@ -701,6 +754,43 @@
     </section>
   </div>
 
+  <!-- BOOTHS: FotoReceipt Booth -->
+  <div class="panel" id="booth-receipt">
+    <section>
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="eyebrow">Booths</span>
+          <h2>FotoReceipt Booth</h2>
+          <p>A compact, retro-style booth that prints photos like a receipt — quick, playful, and space-saving. A fun addition to cocktail hour, or a standalone fit for smaller pop-up events.</p>
+        </div>
+        <div class="booth-meta">
+          <div class="booth-used-for">
+            <span class="label">Best for</span>
+            <div class="use-tags">
+              <span class="use-tag">Cocktail hour</span>
+              <span class="use-tag">Small pop-ups</span>
+              <span class="use-tag">Brand activations</span>
+              <span class="use-tag">Tight spaces</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" data-tab="packages">Check pricing →</button>
+        </div>
+        <!-- ============================================================
+             FOTORECEIPT BOOTH GALLERY:
+             Replace each placeholder with a real photo of this unit.
+             Drop files next to index.html (e.g. receipt1.jpg, receipt2.jpg)
+             and they'll load automatically — any that don't load show
+             a placeholder instead of a broken image.
+             ============================================================ -->
+        <div class="gallery" style="margin-top:44px">
+          <div class="shot"><img src="receipt1.jpg" alt="FotoReceipt Booth unit" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="shot-ph">🧾<span>receipt1.jpg</span></div></div>
+          <div class="shot"><img src="receipt2.jpg" alt="FotoReceipt Booth receipt-style print" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="shot-ph">🧾<span>receipt2.jpg</span></div></div>
+          <div class="shot"><img src="receipt3.jpg" alt="FotoReceipt Booth at an event" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="shot-ph">🧾<span>receipt3.jpg</span></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <!-- PACKAGES -->
   <div class="panel" id="packages">
     <section>
@@ -708,7 +798,7 @@
         <div class="sec-head center">
           <span class="eyebrow">Packages</span>
           <h2>Simple pricing, everything included</h2>
-          <p>Setup, breakdown, an on-site attendant, and a full online gallery come with every package. <strong style="color:var(--accent);font-weight:600">Highlighted</strong> items show what's added when you move up a tier. Have something specific in mind? Message us for a custom quote.</p>
+          <p>Pricing below is for <strong style="color:var(--accent);font-weight:600">The Fotobooth</strong>, our signature open-air unit. Setup, breakdown, an on-site attendant, and a full online gallery come with every package. <strong style="color:var(--accent);font-weight:600">Highlighted</strong> items show what's added when you move up a tier.</p>
         </div>
         <div class="pkg-grid">
 
@@ -719,7 +809,7 @@
             <ul>
               <li><span class="chk">✓</span> 3 hours of photo booth experience</li>
               <li><span class="chk">✓</span> Professional on-site booth attendant</li>
-              <li><span class="chk">✓</span> Unlimited digital sharing (AirDrop &amp; QR code)</li>
+              <li><span class="chk">✓</span> Unlimited digital sharing (AirDrop)</li>
               <li><span class="chk">✓</span> One custom photo strip design</li>
               <li><span class="chk">✓</span> Personalized welcome screen</li>
               <li><span class="chk">✓</span> Curated prop collection</li>
@@ -739,7 +829,7 @@
               <li><span class="chk">✓</span> <span><strong>4 hours</strong> of photo booth experience</span></li>
               <li><span class="chk">✓</span> Professional on-site booth attendant</li>
               <li><span class="chk">✓</span> <span><strong>Unlimited instant prints</strong></span></li>
-              <li><span class="chk">✓</span> Unlimited digital sharing (AirDrop &amp; QR code)</li>
+              <li><span class="chk">✓</span> Unlimited digital sharing (AirDrop)</li>
               <li><span class="chk">✓</span> One custom photo strip design</li>
               <li><span class="chk">✓</span> Personalized welcome screen</li>
               <li><span class="chk">✓</span> Curated prop collection</li>
@@ -753,22 +843,68 @@
 
           <div class="pkg pkg-luxury">
             <h3>Luxury Experience</h3>
-            <div class="price">Starting at $725</div>
+            <div class="price">Starting at $750</div>
             <p class="desc">Everything in Signature, extended, with premium upgrades and a keepsake guest book. Our most complete package.</p>
             <ul>
               <li><span class="chk">✓</span> <span><strong>5 hours</strong> of photo booth experience</span></li>
               <li><span class="chk">✓</span> Professional on-site booth attendant</li>
               <li><span class="chk">✓</span> Unlimited instant prints</li>
-              <li><span class="chk">✓</span> Unlimited digital sharing (AirDrop &amp; QR code)</li>
+              <li><span class="chk">✓</span> Unlimited digital sharing (AirDrop)</li>
               <li><span class="chk">✓</span> <span><strong>Two</strong> custom photo strip designs</span></li>
               <li><span class="chk">✓</span> <span><strong>Custom welcome screen animation</strong></span></li>
-              <li><span class="chk">✓</span> <span><strong>Premium</strong> curated prop collection</span></li>
               <li><span class="chk">✓</span> <span><strong>Guest Book Experience</strong> (album, extra strips &amp; pens)</span></li>
               <li><span class="chk">✓</span> Full online gallery of every photo</li>
               <li><span class="chk">✓</span> Gallery delivered within 24–48 hours</li>
               <li><span class="chk">✓</span> Setup &amp; breakdown included</li>
             </ul>
             <button class="btn btn-ghost" data-tab="contact" data-package="Luxury Experience">Ask about Luxury</button>
+          </div>
+
+          <div class="pkg pkg-custom">
+            <h3>Custom</h3>
+            <div class="price">Let's talk</div>
+            <p class="desc">For weddings, large events, and anything beyond our standard tiers.</p>
+            <ul>
+              <li><span class="chk">✓</span> Built around your date &amp; guest count</li>
+              <li><span class="chk">✓</span> Flexible hours and add-ons</li>
+              <li><span class="chk">✓</span> Ideal for weddings &amp; multi-day events</li>
+              <li><span class="chk">✓</span> Personalized quote, no surprises</li>
+            </ul>
+            <button class="btn btn-primary" data-tab="contact" data-package="Custom quote">Request a custom quote →</button>
+          </div>
+
+        </div>
+
+        <div class="pricing-subhead">
+          <h3>FotoReceipt Booth</h3>
+          <p>Prefer our compact, receipt-style booth on its own? It's available as a standalone rental too.</p>
+        </div>
+        <div class="pkg-grid two">
+
+          <div class="pkg">
+            <h3>FotoReceipt Booth</h3>
+            <div class="price">$300</div>
+            <p class="desc">Flat-rate pricing for a 4–5 hour event.</p>
+            <ul>
+              <li><span class="chk">✓</span> 4–5 hours of FotoReceipt Booth time</li>
+              <li><span class="chk">✓</span> Professional on-site attendant</li>
+              <li><span class="chk">✓</span> Unlimited receipt-style prints</li>
+              <li><span class="chk">✓</span> Unlimited digital sharing (QR code)</li>
+              <li><span class="chk">✓</span> Setup &amp; breakdown included</li>
+            </ul>
+            <button class="btn btn-ghost" data-tab="contact" data-package="FotoReceipt Booth">Ask about FotoReceipt Booth</button>
+          </div>
+
+          <div class="pkg pkg-custom">
+            <h3>Custom</h3>
+            <div class="price">Let's talk</div>
+            <p class="desc">For longer events or FotoReceipt Booth paired with something bigger.</p>
+            <ul>
+              <li><span class="chk">✓</span> Built around your date &amp; event length</li>
+              <li><span class="chk">✓</span> Pair with The Fotobooth for both units</li>
+              <li><span class="chk">✓</span> Personalized quote, no surprises</li>
+            </ul>
+            <button class="btn btn-primary" data-tab="contact" data-package="FotoReceipt Custom Quote">Request a custom quote →</button>
           </div>
 
         </div>
@@ -783,25 +919,18 @@
             <div class="addon featured-addon">
               <div class="a-top"><span class="a-ico">📖</span><span class="a-tag">Most popular</span></div>
               <h3>Guest Book Experience</h3>
-              <div class="a-price">$150</div>
               <p>Premium scrapbook album, an extra photo strip for every session, and metallic pens for personalized messages.</p>
             </div>
-            <div class="addon featured-value"><div class="a-top"><span class="a-ico">✨</span><span class="a-tag a-tag-value">Great value</span></div><h3>Additional Hours</h3><div class="a-price">$50<span> / hour</span></div><p>Keep the booth open longer so every guest gets their turn. Add as many extra hours as your event needs.</p></div>
-            <div class="addon"><div class="a-top"><span class="a-ico">🌸</span></div><h3>Premium Backdrop Collection</h3><div class="a-price">Starting at $150</div><p>Upgrade from standard to a designer backdrop — florals, sequins, textures, and more to match your theme.</p></div>
-            <div class="addon"><div class="a-top"><span class="a-ico">🔑</span></div><h3>Keychains</h3><div class="a-price">$125</div><p>Your photo strip turned into a durable keychain — a fun keepsake guests can clip to a bag or keys.</p></div>
-            <div class="addon"><div class="a-top"><span class="a-ico">🧲</span></div><h3>Magnet &amp; Frame Photo Strips</h3><div class="a-price">$75</div><p>Send guests home with a keepsake — photo strips finished as fridge magnets or slipped into display-ready paper frames.</p></div>
-            <div class="addon"><div class="a-top"><span class="a-ico">🎭</span></div><h3>Premium Prop Collection</h3><div class="a-price">$50</div><p>An elevated, curated set of props and signs that bring extra fun and personality to every photo.</p></div>
-            <div class="addon"><div class="a-top"><span class="a-ico">🎨</span></div><h3>Additional Custom Photo Strip Design</h3><div class="a-price">$50<span> each</span></div><p>A second (or third) custom strip layout — perfect for events with multiple themes, hosts, or looks.</p></div>
-            <div class="addon"><div class="a-top"><span class="a-ico">🎉</span></div><h3>Custom Welcome Screen Animation</h3><div class="a-price">$25</div><p>Greet guests with a personalized animated welcome screen featuring your names, event, and colors.</p></div>
-            <div class="addon"><div class="a-top"><span class="a-ico">🚗</span></div><h3>Extended Travel</h3><div class="a-price">Custom quote</div><p>Hosting beyond our local area? We travel to make it happen — reach out with your location for a quick quote.</p></div>
+            <div class="addon featured-value"><div class="a-top"><span class="a-ico">✨</span><span class="a-tag a-tag-value">Great value</span></div><h3>Additional Hours</h3><p>Keep the booth open longer so every guest gets their turn. Add as many extra hours as your event needs.</p></div>
+            <div class="addon"><div class="a-top"><span class="a-ico">🧾</span></div><h3>FotoReceipt Booth</h3><p>Our compact, retro-style booth that prints photos like a receipt — a fun add-on for cocktail hour or a standalone fit for small pop-up events.</p><button class="addon-link" data-tab="booth-receipt">See more →</button></div>
+            <div class="addon"><div class="a-top"><span class="a-ico">🌸</span></div><h3>Premium Backdrop Collection</h3><p>Upgrade from standard to a designer backdrop — florals, sequins, textures, and more to match your theme.</p></div>
+            <div class="addon"><div class="a-top"><span class="a-ico">🔑</span></div><h3>Keychains</h3><p>Your photo strip turned into a durable keychain — a fun keepsake guests can clip to a bag or keys.</p></div>
+            <div class="addon"><div class="a-top"><span class="a-ico">🧲</span></div><h3>Magnet &amp; Frame Photo Strips</h3><p>Send guests home with a keepsake — photo strips finished as fridge magnets or slipped into display-ready paper frames.</p></div>
+            <div class="addon"><div class="a-top"><span class="a-ico">🎭</span></div><h3>Premium Prop Collection</h3><p>An elevated, curated set of props and signs that bring extra fun and personality to every photo.</p></div>
+            <div class="addon"><div class="a-top"><span class="a-ico">🎨</span></div><h3>Additional Custom Photo Strip Design</h3><p>A second (or third) custom strip layout — perfect for events with multiple themes, hosts, or looks.</p></div>
+            <div class="addon"><div class="a-top"><span class="a-ico">🎉</span></div><h3>Custom Welcome Screen Animation</h3><p>Greet guests with a personalized animated welcome screen featuring your names, event, and colors.</p></div>
+            <div class="addon"><div class="a-top"><span class="a-ico">🚗</span></div><h3>Extended Travel</h3><p>Hosting beyond our local area? We travel to make it happen — reach out with your location for a quick quote.</p></div>
           </div>
-        </div>
-
-        <div class="custom-cta">
-          <span class="eyebrow">Custom requests</span>
-          <h2>Planning something bigger?</h2>
-          <p>Weddings, milestone celebrations, corporate events, multi-day affairs — if your event calls for more than a standard package, we'll build a custom quote around your date, guest count, and vision.</p>
-          <button class="btn btn-primary" data-tab="contact" data-package="Custom quote">Request a custom quote →</button>
         </div>
       </div>
     </section>
@@ -822,7 +951,7 @@
           <details class="faq"><summary>Do you travel to my venue?<span class="plus">+</span></summary><div class="ans">Yes. Local travel is included, and longer distances are available as an extended travel add-on with a custom quote. Reach out with your location and we'll give you an estimate.</div></details>
           <details class="faq"><summary>What's included in setup and teardown?<span class="plus">+</span></summary><div class="ans">Setup and breakdown are included in every package. We arrive early to set up before your event starts and pack down afterward — you don't lift a finger.</div></details>
           <details class="faq"><summary>Can the photo strips be branded for my event?<span class="plus">+</span></summary><div class="ans">Yes. Every package includes one custom photo strip design with your names, event date, or theme, plus a personalized welcome screen. Need more than one design? That's an easy add-on.</div></details>
-          <details class="faq"><summary>When do I get my photos?<span class="plus">+</span></summary><div class="ans">Other than the physical prints you get, guests share instantly at the event via AirDrop and QR code. Your full online gallery of every photo is delivered within 24–48 hours after the event.</div></details>
+          <details class="faq"><summary>When do I get my photos?<span class="plus">+</span></summary><div class="ans">Other than the physical prints you get, guests share instantly at the event — via AirDrop with The Fotobooth, or QR code with the FotoReceipt Booth. Your full online gallery of every photo is delivered within 24–48 hours after the event.</div></details>
           <details class="faq"><summary>What's your deposit and cancellation policy?<span class="plus">+</span></summary><div class="ans">A deposit reserves your date, with the balance due the day before the event. Full details are on your booking agreement — reach out and we'll walk you through it.</div></details>
         </div>
       </div>
@@ -926,7 +1055,9 @@
                   <option value="Essential Experience">Essential Experience</option>
                   <option value="Signature Experience">Signature Experience</option>
                   <option value="Luxury Experience">Luxury Experience</option>
-                  <option value="Custom quote">Custom quote</option>
+                  <option value="Custom quote">Custom quote (The Fotobooth)</option>
+                  <option value="FotoReceipt Booth">FotoReceipt Booth</option>
+                  <option value="FotoReceipt Custom Quote">Custom quote (FotoReceipt Booth)</option>
                 </select>
               </div>
               <div class="field"><label for="date">Event date</label><input id="date" name="event date" type="date"></div>
@@ -970,7 +1101,8 @@
         </a>
       </div>
       <div class="foot-links">
-        <button data-tab="showcase">The Booth</button>
+        <button data-tab="booth-classic">The Fotobooth</button>
+        <button data-tab="booth-receipt">FotoReceipt Booth</button>
         <button data-tab="packages">Pricing</button>
         <button data-tab="faq">FAQ</button>
         <button data-tab="booking">Book now</button>
@@ -989,12 +1121,38 @@
   const panels = document.querySelectorAll('.panel');
   const navTabs = document.getElementById('tabs');
   const menuBtn = document.getElementById('menuBtn');
+  const boothsDropdown = document.getElementById('boothsDropdown');
+  const boothsTrigger = document.getElementById('boothsTrigger');
+
+  function closeBoothsDropdown(){
+    if(!boothsDropdown) return;
+    boothsDropdown.classList.remove('open');
+    if(boothsTrigger) boothsTrigger.setAttribute('aria-expanded','false');
+  }
 
   function activate(name){
     panels.forEach(p=>p.classList.toggle('active', p.id===name));
     tabs.forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+    // Keep the "Booths" nav trigger highlighted while on either booth detail page
+    if(boothsTrigger) boothsTrigger.classList.toggle('active', name==='booth-classic' || name==='booth-receipt');
     navTabs.classList.remove('open');
+    closeBoothsDropdown();
     window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // Booths dropdown: click to open/close, close on outside click or Escape
+  if(boothsDropdown && boothsTrigger){
+    boothsTrigger.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const isOpen = boothsDropdown.classList.toggle('open');
+      boothsTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    document.addEventListener('click',(e)=>{
+      if(!boothsDropdown.contains(e.target)) closeBoothsDropdown();
+    });
+    document.addEventListener('keydown',(e)=>{
+      if(e.key==='Escape') closeBoothsDropdown();
+    });
   }
 
   // Any element with data-tab switches panels
@@ -1057,7 +1215,8 @@
             const methodPhrase = {'Email':'by email','Phone call':'by phone','Text message':'by text'};
             const methodPart = methodPhrase[contactMethod] ? ' ' + methodPhrase[contactMethod] : '';
             let subject = '';
-            if(pkg === 'Custom quote') subject = ' about a custom quote';
+            if(pkg === 'Custom quote') subject = ' about a custom quote for The Fotobooth';
+            else if(pkg === 'FotoReceipt Custom Quote') subject = ' about a custom quote for the FotoReceipt Booth';
             else if(pkg) subject = ` about the ${pkg}`;
             successMsg.textContent = `Thanks for reaching out${subject} — we'll get back to you${methodPart} within 1–3 business days.`;
           }
