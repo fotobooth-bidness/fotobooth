@@ -967,7 +967,7 @@
           <span class="eyebrow">Booking</span>
           <h2>Check available dates &amp; times</h2>
           <p>Browse the calendar below to check each day's status, then message us to inquire. Availability updates regularly.</p>
-          <p class="slot-guide">A <strong>gold</strong> date means fotobooth already has a booking that day, but other times may still be open — <strong>message us to check</strong>. Exact times are arranged when you book.</p>
+          <p class="slot-guide">A <strong>gold</strong> date means someone may already be booking that day, or availability needs to be confirmed — <strong>message us to check</strong>. Exact times are arranged when you book.</p>
         </div>
 
         <div class="cal-wrap">
@@ -1373,7 +1373,8 @@
      status of each day so they know before reaching out.
 
      For each date, give it ONE status label:
-        "limited"  -> a booking exists, but other times MAY be open
+        "limited"  -> someone is potentially booking this date, and/or
+                      availability needs to be confirmed
                       (shows gold "Contact for availability")
         "full"     -> the whole day is booked (shows red "Fully Booked")
         "na"        -> you're personally unavailable that day
@@ -1416,8 +1417,13 @@
     // --- Nov 21, 2026: unavailable ---
     "2026-11-21": "na",
 
-    // --- May 27, 2027: unavailable ---
-    "2027-05-27": "full",   
+    // --- 2027 ---
+    "2027-02-27": "limited",
+    "2027-05-01": "limited",
+    "2027-05-22": "limited",
+    "2027-05-27": "full",
+    "2027-05-30": "full",
+    "2027-09-18": "limited",
   };
 
   /* ====== (You don't need to edit anything below this line) ====== */
@@ -1448,7 +1454,7 @@
     // shown when a client clicks the day.
     const STATUS_INFO = {
       open:    { cls:'open',    label:'Available',              note:"This date is open — message us to book!", disabled:false },
-      limited: { cls:'some',    label:'Contact for availability', note:"Partially booked — message us to check what times are still available.", disabled:false },
+      limited: { cls:'some',    label:'Contact for availability', note:"Someone may be booking this date, or availability needs to be confirmed — message us to check if it's still open.", disabled:false },
       full:    { cls:'full',    label:'Fully Booked',           note:"This date is fully booked. Feel free to message us about other dates!", disabled:true },
       na:      { cls:'na',      label:'Not Available',          note:"fotobooth is not available on this date. Message us about other dates!", disabled:true }
     };
